@@ -1,11 +1,11 @@
 FROM node:14
 
-WORKDIR /usr/service
+WORKDIR /usr/src/app
 
-COPY package.json .
-COPY index.js .
+COPY package*.json ./
 
-EXPOSE 8080
+RUN npm install
 
-CMD ["npm", "install"]
-CMD ["npm", "start"]
+COPY . .
+
+CMD [ "npm", "start" ]
