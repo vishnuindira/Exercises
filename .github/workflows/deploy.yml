@@ -1,0 +1,25 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Pull the image
+        run: docker pull vishnuindira/exercise:latest
+
+      - name: Stop and remove existing container if exists
+        run: docker stop my-app || true && docker rm my-app || true
+
+      - name: Start the container
+        run: docker run -d --name my-app -p 8080:8080 vishnuindira/exercise:latest
