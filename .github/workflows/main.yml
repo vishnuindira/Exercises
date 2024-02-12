@@ -27,5 +27,5 @@ jobs:
           context: .
           push: true
           tags: |
-            <your-username>/<your-app-name>:latest
-            <your-username>/<your-app-name>:${{ github.sha }}
+            vishnuindira/exercise:latest
+            vishnuindira/exercise:${{ github.sha }}
