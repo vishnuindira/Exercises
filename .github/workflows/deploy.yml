@@ -25,4 +25,4 @@ jobs:
         run: docker stop my-app || true && docker rm my-app || true
 
       - name: Start the container
-        run: docker run -d --name my-app -p 8080:8080 vishnuindira/exercise:latest
+        run: docker run -d --name my-app -p 3000:8080 vishnuindira/exercise:latest
