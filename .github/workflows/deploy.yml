@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ip-172-31-15-14
+    runs-on: ec2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
