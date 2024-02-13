@@ -1,7 +1,7 @@
 # Use a Node.js base image
 FROM node:14
 
-# Sets the directory for following commands
+# Set the working directory
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
@@ -13,8 +13,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Expose the right port
+# Expose the required port
 EXPOSE 8080
 
-# The start command of the container
-CMD npm install && npm start
+# Start the server
+CMD ["npm", "start"]
