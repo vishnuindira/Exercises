@@ -37,7 +37,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/path/to/destination
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/home/ec2-user/logs
 
   deploy:
     runs-on: self-hosted
@@ -68,4 +68,4 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/path/to/destination
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/home/ec2-user/logs
