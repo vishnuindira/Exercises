@@ -33,13 +33,12 @@ jobs:
       - name: If CI failed, log the error into a file and copy it to EC2
         if: ${{ failure() }}
         run: |
-          echo "$(date) - Build Failure in repo: ${{ github.repository }}" >> logfile.log
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
           scp -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/home/ec2-user/logs/
 
-  deploy:
     runs-on: self-hosted
     needs: build
     steps:
