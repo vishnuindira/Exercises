@@ -29,7 +29,11 @@ jobs:
           tags: |
             vishnuindira/exercise:latest
             vishnuindira/exercise:${{ github.sha }}
-
+            
+      - name: If previous step failed, log the error
+        if: ${{ failure() }}
+        run: |
+          echo "$(date) - Build Failure in repo: ${{ github.repository }}" >> /home/ec2-user/logs/logfile.log
   deploy:
     runs-on: self-hosted
     needs: build
