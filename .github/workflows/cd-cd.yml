@@ -29,11 +29,14 @@ jobs:
           tags: |
             vishnuindira/exercise:latest
             vishnuindira/exercise:${{ github.sha }}
-            
-      - name: If previous step failed, log the error and transfer log to EC2
+
+      - name: If CI failed, log the error into a file and copy it to EC2
         if: ${{ failure() }}
         run: |
           echo "$(date) - Build Failure in repo: ${{ github.repository }}" >> logfile.log
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
           scp -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/home/ec2-user/logs/
 
   deploy:
@@ -42,13 +45,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Setup SSH Key and known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -65,8 +61,11 @@ jobs:
       - name: Start the container
         run: docker run -d --name my-app -p 3000:8080 vishnuindira/exercise:latest
 
-      - name: If previous step failed, log the error and transfer log to EC2
+      - name: If CD failed, log the error into a file and copy it to EC2
         if: ${{ failure() }}
         run: |
           echo "$(date) - Deploy Failure in repo: ${{ github.repository }}" >> logfile.log
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
           scp -i ~/.ssh/id_rsa logfile.log ec2-user@${{ secrets.EC2_IP_ADDRESS }}:/home/ec2-user/logs/
