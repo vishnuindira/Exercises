@@ -18,4 +18,5 @@ EXPOSE 8080
 
 # Start the server
 #CMD ["npm", "start"]
+# Install app dependencies & Start the server
 CMD ["/bin/sh", "-c", "npm install && npm start"]
