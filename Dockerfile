@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+#RUN npm install
 
 # Bundle app source
 COPY . .
@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 8080
 
 # Start the server
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD ["/bin/sh", "-c", "npm install && npm start"]
