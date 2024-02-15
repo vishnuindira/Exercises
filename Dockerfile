@@ -5,10 +5,7 @@ FROM node:14
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install app dependencies
-#RUN npm install
+#COPY package*.json ./
 
 # Bundle app source
 COPY . .
